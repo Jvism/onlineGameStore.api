@@ -1,13 +1,11 @@
 import express from 'express'
-import userRoutes from './routes/routes'
 import cors from 'cors'
+import { gameRouter } from './routes/index.routes.js'
 
 const app = express()
 
 app.use(cors())
 app.use(express.json())
-app.use('/api', userRoutes)
+app.use(gameRouter)
 
-export default {
-  app
-}
+export default app
