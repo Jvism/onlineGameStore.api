@@ -5,7 +5,7 @@ const router = Router()
 
 router.get('/games', getGames)
 router.post('/games', createGame)
-router.put('/games', updateGame)
+router.put('/games/:id', updateGame)
 router.delete('/games/:id', deleteGame)
 router.get('/games/:id', getGame)
 

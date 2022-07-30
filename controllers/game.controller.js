@@ -1,9 +1,8 @@
 import Game from '../models/game.model.js'
 import Category from '../models/category.model.js'
-import gameCategory from '../models/gameCategory.model.js'
-// import { Op } from 'sequelize'
+import GameCategory from '../models/gameCategory.model.js'
 
-// Buscar todos los juegos
+// Buscar todos los juegos y filtrarlos por plataforma o categoria
 export const getGames = async (req, res) => {
   try {
     // Consultamos que exista filtros
@@ -23,7 +22,6 @@ export const getGames = async (req, res) => {
         const categoriesOfGame = game.dataValues.categories.map((category) => category.name)
 
         if (typeof Categories === 'string') {
-          console.log(categoriesOfGame.includes(Categories))
           return categoriesOfGame.includes(Categories)
         } else {
           categoriesOfGame.forEach((category) => {
@@ -68,11 +66,11 @@ export const createGame = async (req, res) => {
 
         if (categoryExist) {
           const newGameId = newGame.id
-          await gameCategory.create({ gameId: newGameId, categoryName: category })
+          await GameCategory.create({ gameId: newGameId, categoryName: category })
         }
       })
 
-      res.status(204).send()
+      res.status(201).send()
     } else {
       res.status(304).send()
     }
@@ -87,8 +85,28 @@ export const createGame = async (req, res) => {
 // Actualizar un juego
 export const updateGame = async (req, res) => {
   try {
-    res.sen('ok')
+    // Recuperamos datos del body
+    const gameId = req.params.id
+    const { name, description, platform, price, quantity, discount, urlImage, categories } = req.body
+
+    // Creamos el Juego
+    const game = await Game.findByPk(gameId)
+
+    // Genereramos la actualizacion
+    await game.update({ name, description, platform, price, quantity, discount, urlImage })
+
+    categories.forEach(async (category) => {
+      const categoryExist = await Category.findByPk(category)
+
+      if (categoryExist) {
+        await GameCategory.findOrCreate({ where: { gameId, categoryName: category } })
+      }
+    })
+
+    res.status(204).send()
+    // fin del try
   } catch (error) {
+    console.log(error)
     res.status(500).json({ message: error })
   }
 }
@@ -96,7 +114,19 @@ export const updateGame = async (req, res) => {
 // Eliminar un juego
 export const deleteGame = async (req, res) => {
   try {
-    res.sen('ok')
+    // Obtenemos el id
+    const gameId = req.params.id
+
+    // Realizamos la instancia del juego solictado
+    const game = await Game.findByPk(gameId)
+
+    if (game) {
+      // se destruye
+      await game.destroy()
+      res.status(200).json({ message: 'Juego destruido satisfactoriamente' })
+    } else {
+      res.status(404).json({ message: 'Juego no encontrado' })
+    }
   } catch (error) {
     res.status(500).json({ message: error })
   }
@@ -105,16 +135,24 @@ export const deleteGame = async (req, res) => {
 // Buscar un juego
 export const getGame = async (req, res) => {
   try {
-    res.sen('ok')
-  } catch (error) {
-    res.status(500).json({ message: error })
-  }
-}
+    // Obtenemos el id del juego
+    let gameId = req.params.id
 
-// Filtrar juegos
-export const getFilterGames = async (req, res) => {
-  try {
-    res.sen('ok')
+    if (!isNaN(gameId)) {
+      gameId = Number(gameId)
+
+      // buscamos el juego segun el id
+      const game = await Game.findAll({ where: gameId, include: Category })
+
+      if (game) {
+        res.status(200).json(game)
+      } else {
+        res.status(404).json({ message: 'Juego no encontrado' })
+      }
+    } else {
+      res.status(404).json({ message: 'Juego no encontrado' })
+    }
+    // final del try
   } catch (error) {
     res.status(500).json({ message: error })
   }
