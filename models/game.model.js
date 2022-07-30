@@ -23,13 +23,16 @@ const Game = sequelize.define('game', {
     type: DataTypes.INTEGER
   },
   quantity: {
-    type: DataTypes.INTEGER
+    type: DataTypes.INTEGER,
+    defaultValue: 0
   },
   discount: {
-    type: DataTypes.INTEGER
+    type: DataTypes.INTEGER,
+    defaultValue: 0
   },
   url_image: {
-    type: DataTypes.STRING
+    type: DataTypes.STRING,
+    defaultValue: 'https://programacion.net/files/article/20161110041116_image-not-found.png'
   }
 })
 

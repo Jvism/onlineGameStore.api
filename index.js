@@ -7,10 +7,10 @@ const PORT = 3000
 //  Funcion de conexion a la base de datos y el servidor
 async function main () {
   try {
-    await sequelize.sync()
+    await sequelize.authenticate()
     console.log('La conexion con la base de datos se ha establecido correctamente')
     app.listen(PORT, () => {
-      console.log(`Server listen on PORT ${PORT}`)
+      console.log(`Servidor escuchando en el Puerto ${PORT}`)
     })
   } catch (error) {
     console.log(error)
