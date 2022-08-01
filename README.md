@@ -16,7 +16,7 @@ Antes que todo, es importante ejecutar poseer postgreSQL para el enlace de la ba
 
 ## Project Setup
 
-Se debe configurar la base de datos con el nombre `onlineGameStore.appi`, usario `postgre`, contraseña `admin`
+Se debe configurar la base de datos con el nombre `onlineGameStore.appi`, usario `postgres`, contraseña `admin`
 
 dado que la conexion con la base de datos se hara mediante el siguiente codigo:
 
