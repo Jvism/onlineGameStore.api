@@ -1,15 +1,27 @@
 # onlineGameStore.api
 
-Esta guia te permitira ejecutar la aplicacion web, la cual fue desarrollada en VUE JS 3
+Esta guia te permitira ejecutar el API.
 
-Antes que todo, es importante ejecutar la API para la app en el siguiente link [onlineGameStore.api](https://github.com/Jvism/onlineGameStore.api)
+Se utilizaron las siguientes tecnologias:
+
+* NodeJS
+* Express
+* Sequelize
+* PostgreSQL
+* cors
+
+
+
+Antes que todo, es importante ejecutar poseer postgreSQL para el enlace de la base de datos [PostgreSQL](https://www.postgresql.org/)
 
 ## Project Setup
 
-mediante la terminal, ingresamos a la carpeta onlineGameStore
+Se debe configurar la base de datos con el nombre `onlineGameStore.appi`, usario `postgre`, contraseña `admin`
+
+dado que la conexion con la base de datos se hara mediante el siguiente codigo:
 
 ```sh
-cd onlineGameStore
+const sequelize = new Sequelize('onlineGameStore.api', 'postgres', 'admin', { host: 'localhost', dialect: 'postgres' })
 ```
 
 ### Instalamos dependencias
